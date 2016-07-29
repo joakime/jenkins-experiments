@@ -1,6 +1,6 @@
 package jetty.uber;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -20,6 +20,6 @@ public class EnvTest
                 .sorted((e1, e2) -> e1.getKey().toString().compareTo(e2.getKey().toString()))
                 .forEach(entry -> System.out.println("  " + entry.getKey() + " = " + entry.getValue()));
         
-        assertThat("BRANCH Exists", System.getenv("BRANCH"), notNullValue());
+        assertThat("BRANCH Exists", System.getenv("BRANCH"), nullValue());
     }
 }
