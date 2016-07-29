@@ -1,6 +1,6 @@
 #!groovy
 
-node('linux') {
+node('oss') {
   // System Dependent Locations
   def mvntool = tool name: 'maven3', type: 'hudson.tasks.Maven$MavenInstallation'
   def jdktool = tool name: 'jdk8', type: 'hudson.model.JDK'
