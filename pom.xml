@@ -2,12 +2,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.eclipse.jetty.demo</groupId>
-  <artifactId>embedded-jetty-uber-jar</artifactId>
+  <artifactId>jenkins-experiments</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jetty-version>9.3.2.v20150730</jetty-version>
+    <jetty-version>9.3.11.v20160721</jetty-version>
   </properties>
   <dependencies>
     <dependency>
@@ -24,6 +24,11 @@
       <groupId>org.eclipse.jetty.websocket</groupId>
       <artifactId>javax-websocket-server-impl</artifactId>
       <version>${jetty-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty.toolchain</groupId>
+      <artifactId>jetty-test-helper</artifactId>
+      <version>3.1</version>
     </dependency>
   </dependencies>
   <build>
