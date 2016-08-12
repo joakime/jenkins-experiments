@@ -9,14 +9,26 @@ node('linux') {
   List mvnEnv = ["PATH+MVN=${mvntool}/bin", "PATH+JDK=${jdktool}/bin", "JAVA_HOME=${jdktool}/", "MAVEN_HOME=${mvntool}"]
   mvnEnv.add("MAVEN_OPTS=-Xms256m -Xmx1024m -XX:MaxPermSize=512m -Djava.awt.headless=true")
 
-  stage 'Checkout'
+  try
+  {
+    stage 'Checkout'
 
-  checkout scm
+    checkout scm
+  } catch (Exception e) {
+    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Checkout Failure (${e.message})!", body: ".(a)."
+    throw e
+  }
 
-  stage 'Compile & Test'
+  try
+  {
+    stage 'Compile & Test'
 
-  withEnv(mvnEnv) {
-    sh "mvn -B clean install"
+    withEnv(mvnEnv) {
+      sh "mvn -B clean install"
+    }
+  } catch (Exception e) {
+    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure (${e.message})!", body: ".(b)."
+    throw e
   }
 }
 // vim: et:ts=2:sw=2:ft=groovy
