@@ -15,7 +15,7 @@ node('linux') {
 
     checkout scm
   } catch (Exception e) {
-    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Checkout Failure (${e.message})!", body: ".(a)."
+    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Checkout Failure (${e.message})!", to: "${env.EMAILADDRESS}", body: ".(a)."
     throw e
   }
 
@@ -27,7 +27,7 @@ node('linux') {
       sh "mvn -B clean install"
     }
   } catch (Exception e) {
-    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure (${e.message})!", body: ".(b)."
+    emailext subject: "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure (${e.message})!", to: "${env.EMAILADDRESS}", body: ".(b)."
     throw e
   }
 }
