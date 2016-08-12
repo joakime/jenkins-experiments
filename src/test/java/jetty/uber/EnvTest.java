@@ -1,5 +1,6 @@
 package jetty.uber;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -21,5 +22,6 @@ public class EnvTest
                 .forEach(entry -> System.out.println("  " + entry.getKey() + " = " + entry.getValue()));
         
         assertThat("BRANCH Exists", System.getenv("BRANCH"), nullValue());
+        assertThat("JAVA_HOME", System.getenv("JOB_NAME"), is("Foo"));
     }
 }
