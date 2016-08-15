@@ -49,6 +49,7 @@ def isActiveBranch()
 {
   def branchName = getBranchName()
   echo "GIT_BRANCH = ${env.GIT_BRANCH}"
+  echo "BRANCH_NAME = ${env.BRANCH_NAME}"
   echo "current branch name = " + branchName
   return ( branchName == "master" ||
            branchName.startsWith("jetty-") ||
