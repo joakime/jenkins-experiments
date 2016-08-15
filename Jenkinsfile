@@ -37,19 +37,9 @@ node('linux') {
   }
 }
 
-def getBranchName()
-{
-  sh "git rev-parse --abbrev-ref HEAD > GIT_BRANCH_NAME"
-  def gitBranch = readFile("GIT_BRANCH_NAME").trim()
-  sh "rm -f GIT_BRANCH_NAME"
-  return gitBranch
-}
-
 def isActiveBranch()
 {
-  def branchName = getBranchName()
-  echo "GIT_BRANCH = ${env.GIT_BRANCH}"
-  echo "BRANCH_NAME = ${env.BRANCH_NAME}"
+  def branchName = "${env.BRANCH_NAME}"
   echo "current branch name = " + branchName
   return ( branchName == "master" ||
            branchName.startsWith("jetty-") ||
