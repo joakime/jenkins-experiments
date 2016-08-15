@@ -48,6 +48,7 @@ def getBranchName()
 def isActiveBranch()
 {
   def branchName = getBranchName()
+  echo "current branch name = " + branchName
   return ( branchName == "master" ||
            branchName.startsWith("jetty-") ||
            branchName.startsWith("jenkins-") );
@@ -61,7 +62,10 @@ def isUnstable()
 def notifyBuild(String buildStatus)
 {
   if ( !isActiveBranch() )
+  {
+    echo "not an branch we care about"
     return
+  }
 
   // default the value
   buildStatus = buildStatus ?: "UNKNOWN"
