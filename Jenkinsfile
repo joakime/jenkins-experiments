@@ -37,6 +37,7 @@ def notifyBuild(String buildStatus)
   // default the value
   buildStatus = buildStatus ?: "UNKNOWN"
 
+  def email = "${env.EMAILADDRESS}"
   def summary = "${env.JOB_NAME}#${env.BUILD_NUMBER} - ${buildStatus}"
   def detail = """<p>Job: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]</p>
   <p><b>${buildStatus}</b></p>
@@ -49,9 +50,9 @@ def notifyBuild(String buildStatus)
   """
 
   emailext (
-    subject = summary,
-    body = detail,
-    to = "${env.EMAILADDRESS}"
+    subject: summary,
+    body: detail,
+    to: email
   )
 
 }
