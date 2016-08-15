@@ -17,7 +17,7 @@ node('linux') {
   } catch (Exception e) {
     SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Checkout Failure (${e.message})!"
     BODY = "JENKINS_URL=${env.JENKINS_URL}\nBUILD_URL=${env.BUILD_URL}\nJOB_URL=${env.JOB_URL}"
-    emailext subject: $SUBJ, to: "${env.EMAILADDRESS}", body: $BODY
+    emailext subject: "${SUBJ}", to: "${env.EMAILADDRESS}", body: "${BODY}"
     throw e
   }
 
@@ -31,7 +31,7 @@ node('linux') {
   } catch (Exception e) {
     SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure (${e.message})!"
     BODY = "JENKINS_URL=${env.JENKINS_URL}\nBUILD_URL=${env.BUILD_URL}\nJOB_URL=${env.JOB_URL}"
-    emailext subject: $SUBJ, to: "${env.EMAILADDRESS}", body: $BODY
+    emailext subject: "${SUBJ}", to: "${env.EMAILADDRESS}", body: "${BODY}"
     throw e
   }
 }
