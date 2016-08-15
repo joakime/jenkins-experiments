@@ -25,6 +25,7 @@ node('linux') {
 
     withEnv(mvnEnv) {
       sh "mvn -B clean install -Dmaven.test.failure.ignore=true"
+      step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
     }
   } catch (Exception e) {
     notifyBuild("Compile & Test Failure")
