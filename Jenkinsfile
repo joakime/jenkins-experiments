@@ -37,6 +37,22 @@ node('linux') {
   }
 }
 
+def getBranchName()
+{
+  sh "git rev-parse --abbrev-ref HEAD > GIT_BRANCH_NAME"
+  def gitBranch = readFile("GIT_BRANCH_NAME").trim()
+  sh "rm -f GIT_BRANCH_NAME"
+  return gitBranch
+}
+
+def isActiveBranch()
+{
+  def branchName = getBranchName()
+  return ( branchName == "master" ||
+           branchName.startsWith("jetty-") ||
+           branchName.startsWith("jenkins-") );
+}
+
 def isUnstable()
 {
   return currentBuild.result == "UNSTABLE"
@@ -44,6 +60,9 @@ def isUnstable()
 
 def notifyBuild(String buildStatus)
 {
+  if ( !isActiveBranch() )
+    return
+
   // default the value
   buildStatus = buildStatus ?: "UNKNOWN"
 
