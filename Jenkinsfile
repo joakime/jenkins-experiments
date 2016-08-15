@@ -29,11 +29,13 @@ node('linux') {
       sh "mvn -B clean install"
     }
   } catch (Exception e) {
-    SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure (${e.message})!"
-    BODY = "Job: <a href=\"${env.BUILD_URL}\">${env.JOB_NAME}</a> <br/>" +
-           "Build: <a href=\"${env.JOB_URL}\">${env.BUILD_NUMBER}</a> <br/>" +
-           "<br/> " + 
-           "<b>Compile & Test Failure: <a href=\"${env.JOB_URL}/console\">${e.message}</a></b>" 
+    SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure!"
+    BODY = "Job: ${env.JOB_NAME} - ${env.JOB_URL} \n " +
+           "Build: ${env.BUILD_NUMBER} - ${env.BUILD_URL} \n " +
+           "Console: ${env.JOB_URL}console \n " +
+           "Test Report: ${env.JOB_URL}testReport/ \n " +
+           " \n " + 
+           "Compile & Test Failure: ${e.message} \n " 
     emailext subject: "${SUBJ}", to: "${env.EMAILADDRESS}", body: "${BODY}"
     throw e
   }
