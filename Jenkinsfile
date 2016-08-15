@@ -24,13 +24,22 @@ node('linux') {
     stage 'Compile & Test'
 
     withEnv(mvnEnv) {
-      sh "mvn -B clean install -Dmaven.test.failure.ignore=true"
+      sh "mvn -B -Dmaven.test.failure.ignore clean install"
       step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+      if(isUnstable())
+      {
+        notifyBuild("Unstable / Test Failures")
+      }
     }
   } catch (Exception e) {
     notifyBuild("Compile & Test Failure")
     throw e
   }
+}
+
+def isUnstable()
+{
+  return currentBuild.result == "UNSTABLE"
 }
 
 def notifyBuild(String buildStatus)
@@ -51,9 +60,10 @@ def notifyBuild(String buildStatus)
   """
 
   emailext (
+    to: email,
     subject: summary,
     body: detail,
-    to: email
+    attachLog: true
   )
 
 }
