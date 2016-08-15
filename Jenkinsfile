@@ -15,9 +15,7 @@ node('linux') {
 
     checkout scm
   } catch (Exception e) {
-    SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Checkout Failure (${e.message})!"
-    BODY = "JENKINS_URL=${env.JENKINS_URL}\nBUILD_URL=${env.BUILD_URL}\nJOB_URL=${env.JOB_URL}"
-    emailext subject: "${SUBJ}", to: "${env.EMAILADDRESS}", body: "${BODY}"
+    notifyBuild("Checkout Failure"!)
     throw e
   }
 
@@ -29,15 +27,34 @@ node('linux') {
       sh "mvn -B clean install"
     }
   } catch (Exception e) {
-    SUBJ = "${env.JOB_NAME} - Build # ${env.BUILD_NUMBER} - Compile & Test Failure!"
-    BODY = "Job: ${env.JOB_NAME} - ${env.JOB_URL} \n " +
-           "Build: ${env.BUILD_NUMBER} - ${env.BUILD_URL} \n " +
-           "Console: ${env.JOB_URL}console \n " +
-           "Test Report: ${env.JOB_URL}testReport/ \n " +
-           " \n " + 
-           "Compile & Test Failure: ${e.message} \n " 
-    emailext subject: "${SUBJ}", to: "${env.EMAILADDRESS}", body: "${BODY}"
+    notifyBuild("Compile & Test Failure"!)
     throw e
   }
 }
+
+def notifyBuild(String buildStatus)
+{
+  // default the value
+  buildStatus = buildStatus ?: "UNKNOWN"
+
+  def summary = "${env.JOB_NAME}#${env.BUILD_NUMBER} - ${buildStatus}"
+  def detail = """<p>Job: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]</p>
+  <p><b>${buildStatus}</b></p>
+  <table>
+    <tr><td>Build</td><td><a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></td><tr>
+    <tr><td>Job</td><td><a href='${env.JOB_URL}'>${env.JOB_URL}</a></td><tr>
+    <tr><td>Console</td><td><a href='${env.JOB_URL}console'>${env.JOB_URL}console</a></td><tr>
+    <tr><td>Test Report</td><td><a href='${env.JOB_URL}testReport/'>${env.JOB_URL}testReport/</a></td><tr>
+  </table>
+  """
+
+  emailext (
+    subject = summary,
+    body = detail,
+    to = "${env.EMAILADDRESS}"
+  )
+
+}
+
+
 // vim: et:ts=2:sw=2:ft=groovy
