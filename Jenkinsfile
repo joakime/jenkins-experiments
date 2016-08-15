@@ -24,7 +24,7 @@ node('linux') {
     stage 'Compile & Test'
 
     withEnv(mvnEnv) {
-      sh "mvn -B clean install"
+      sh "mvn -B clean install -Dmaven.test.failure.ignore=true"
     }
   } catch (Exception e) {
     notifyBuild("Compile & Test Failure")
@@ -39,7 +39,7 @@ def notifyBuild(String buildStatus)
 
   def email = "${env.EMAILADDRESS}"
   def summary = "${env.JOB_NAME}#${env.BUILD_NUMBER} - ${buildStatus}"
-  def detail = """<p>Job: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]</p>
+  def detail = """<h4>Job: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]</h4>
   <p><b>${buildStatus}</b></p>
   <table>
     <tr><td>Build</td><td><a href='${env.BUILD_URL}'>${env.BUILD_URL}</a></td><tr>
