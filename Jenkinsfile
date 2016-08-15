@@ -15,7 +15,7 @@ node('linux') {
 
     checkout scm
   } catch (Exception e) {
-    notifyBuild("Checkout Failure"!)
+    notifyBuild("Checkout Failure")
     throw e
   }
 
@@ -27,7 +27,7 @@ node('linux') {
       sh "mvn -B clean install"
     }
   } catch (Exception e) {
-    notifyBuild("Compile & Test Failure"!)
+    notifyBuild("Compile & Test Failure")
     throw e
   }
 }
