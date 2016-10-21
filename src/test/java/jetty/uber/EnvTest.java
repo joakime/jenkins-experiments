@@ -16,6 +16,8 @@ public class EnvTest
         System.out.println("$MAVEN_HOME = " + System.getenv("MAVEN_HOME"));
         System.out.println("$JAVA_HOME = " + System.getenv("JAVA_HOME"));
     
+        new RuntimeException("Ooops").printStackTrace(System.err);
+        
         System.getProperties().entrySet().stream()
                 .filter(entry -> entry.getKey().toString().matches("^(java|sun|user)\\..*"))
                 .sorted((e1, e2) -> e1.getKey().toString().compareTo(e2.getKey().toString()))
@@ -23,5 +25,6 @@ public class EnvTest
         
         assertThat("BRANCH Exists", System.getenv("BRANCH"), nullValue());
         assertThat("JOB_NAME", System.getenv("JOB_NAME"), is("Foo"));
+
     }
 }
