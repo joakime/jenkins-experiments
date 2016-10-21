@@ -26,6 +26,13 @@ node('linux') {
     withEnv(mvnEnv) {
       sh "mvn -B -Dmaven.test.failure.ignore clean install"
       step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+          step([$class: 'WarningsPublisher', 
+              consoleParsers: [
+                  [parserName: 'Maven'],
+                  [parserName: 'JavaDoc'],
+                  [parserName: 'JavaC'],
+                  [parserName: 'stacktraces']
+              ]])
       if(isUnstable())
       {
         notifyBuild("Unstable / Test Failures")
