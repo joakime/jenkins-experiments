@@ -66,6 +66,9 @@ def notifyBuild(String buildStatus)
     return
   }
 
+  // no point emailing on this
+  return 
+
   // default the value
   buildStatus = buildStatus ?: "UNKNOWN"
 
